@@ -747,8 +747,82 @@ main{padding:.75rem 0;gap:.75rem}
 @media(max-width:380px){.hero-in h1{font-size:1.9rem}.logs{grid-template-columns:1fr}}
 @media(max-height:700px){.hero-in p{display:none}.pop .about img{display:none}}
 </style>
+
+<style id="splash-css">
+#splash{position:fixed;inset:0;z-index:1000;display:none;background:#020507;color:#d8f6fa;cursor:pointer;overflow:hidden}
+#splash.on{display:block}
+#splash .sw{position:absolute;inset:0;perspective:620px;perspective-origin:50% 46%;animation:spBob .62s ease-in-out 4 alternate}
+#splash .st{position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d;animation:spWalk 2.5s .15s cubic-bezier(.42,0,.22,1) forwards}
+#splash .rib,#splash .door{position:absolute;left:-46vmin;top:-31vmin;width:92vmin;height:62vmin;transform-style:preserve-3d}
+#splash .rib svg,#splash .door svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+#splash .door{overflow:hidden;transform-style:flat;clip-path:polygon(13% 0,87% 0,100% 19%,100% 81%,87% 100%,13% 100%,0 81%,0 19%)}
+#splash .sw{transition:transform .65s cubic-bezier(.6,0,.4,1)}
+#splash.out .sw{transform:scale(3.2)}
+#splash .rib .lt{animation:spFlick 1.7s steps(1) infinite}
+#splash .rib.f2 .lt{animation-duration:2.3s;animation-delay:.4s}
+#splash .rib.f3 .lt{animation-duration:.9s;animation-delay:.2s}
+#splash .door .hl,#splash .door .hr{position:absolute;top:6%;bottom:6%;width:44%;background:linear-gradient(90deg,#0b1a20,#132a31 50%,#0b1a20);border:1px solid #2a5560;transition:transform .7s cubic-bezier(.7,0,.2,1)}
+#splash .door .hl{left:6%;clip-path:polygon(14% 0,100% 0,100% 100%,14% 100%,0 86%,0 14%)}
+#splash .door .hr{right:6%;clip-path:polygon(0 0,86% 0,100% 14%,100% 86%,86% 100%,0 100%)}
+#splash .door .hl::after,#splash .door .hr::after{content:"";position:absolute;top:44%;height:12%;width:38%;border:1px solid rgba(140,207,219,.35);background:repeating-linear-gradient(90deg,rgba(140,207,219,.12) 0 2px,transparent 2px 6px)}
+#splash .door .hl::after{right:8%}#splash .door .hr::after{left:8%}
+#splash .door .glow{position:absolute;left:6%;right:6%;top:6%;bottom:6%;background:radial-gradient(ellipse at 50% 50%,#e9fdff 0%,#8ccfdb 35%,rgba(10,30,38,.9) 75%);opacity:0;transition:opacity .5s .1s}
+#splash .door .seam{position:absolute;left:50%;top:8%;bottom:8%;width:2px;margin-left:-1px;background:#8ccfdb;box-shadow:0 0 12px #8ccfdb,0 0 30px #8ccfdb;animation:spSeam 1s ease-in-out infinite alternate}
+#splash .door .lab{position:absolute;left:0;right:0;top:-9%;text-align:center;font:500 2.4vmin/1 'IBM Plex Mono',monospace;letter-spacing:.5em;color:#c94b2b;text-shadow:0 0 10px rgba(201,75,43,.7)}
+#splash.open .door .hl{transform:translateX(-112%)}#splash.open .door .hr{transform:translateX(112%)}
+#splash.open .door .glow{opacity:1}#splash.open .door .seam{opacity:0}
+#splash .fog{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 46%,transparent 18%,rgba(2,5,7,.55) 55%,#020507 82%);pointer-events:none}
+#splash .scan{position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(140,207,219,.045) 0 1px,transparent 1px 3px);pointer-events:none}
+#splash .hud{position:absolute;inset:0;pointer-events:none;font:400 .66rem/1.6 'IBM Plex Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:#5f9aa6}
+#splash .hud .tl{position:absolute;top:max(1.1rem,env(safe-area-inset-top,0px));left:1.2rem}
+#splash .hud .tr{position:absolute;top:max(1.1rem,env(safe-area-inset-top,0px));right:1.2rem;text-align:right}
+#splash .hud .tl b,#splash .hud .tr b{color:#8ccfdb;font-weight:400}
+#splash .hud .msg{position:absolute;left:0;right:0;bottom:22%;text-align:center;color:#d8f6fa;opacity:0;font-size:.74rem;letter-spacing:.3em}
+#splash .hud .msg i{display:block;font:400 clamp(1.8rem,6vw,3.4rem)/1.1 'Instrument Serif',Georgia,serif;letter-spacing:0;text-transform:none;margin-top:.5rem}
+#splash .hud .msg i em{color:#8ccfdb}
+#splash.greet .hud .msg{animation:spFade .45s forwards}
+#splash .hud .skip{position:absolute;left:0;right:0;bottom:max(1.1rem,env(safe-area-inset-bottom,0px));text-align:center;font-size:.58rem;opacity:.8}
+#splash .brk{position:absolute;width:26px;height:26px;border-color:#2f6a76;border-style:solid}
+#splash .brk.a{top:3.2rem;left:1.2rem;border-width:1px 0 0 1px}#splash .brk.b{top:3.2rem;right:1.2rem;border-width:1px 1px 0 0}
+#splash .brk.c{bottom:2.8rem;left:1.2rem;border-width:0 0 1px 1px}#splash .brk.d{bottom:2.8rem;right:1.2rem;border-width:0 1px 1px 0}
+#splash .flash{position:absolute;inset:0;background:#e9fdff;opacity:0;pointer-events:none}
+#splash.out .flash{animation:spFlash .5s forwards}
+#splash.out{animation:spOut .45s .3s forwards}
+@keyframes spWalk{from{transform:translateZ(0)}to{transform:translateZ(3240px)}}
+@keyframes spBob{from{transform:translateY(-3px)}to{transform:translateY(3px)}}
+@keyframes spFlick{0%{opacity:1}6%{opacity:.15}9%{opacity:1}52%{opacity:1}55%{opacity:.3}58%{opacity:1}}
+@keyframes spSeam{from{opacity:.55}to{opacity:1}}
+@keyframes spFade{to{opacity:1}}
+@keyframes spFlash{0%{opacity:0}40%{opacity:.85}100%{opacity:0}}
+@keyframes spOut{to{opacity:0}}
+@media(prefers-reduced-motion:reduce){#splash{display:none!important}}
+</style>
 </head>
 <body>
+<div id="splash" aria-hidden="true"><div class="sw"><div class="st"><div class="rib f1" style="transform:translateZ(0px)"><svg viewBox="0 0 100 67" preserveAspectRatio="none"><polygon points="13,0 87,0 100,13 100,54 87,67 13,67 0,54 0,13" fill="none" stroke="#24505a" stroke-width="1.3" vector-effect="non-scaling-stroke"/><polygon points="16,3 84,3 97,16 97,51 84,64 16,64 3,51 3,16" fill="none" stroke="#163239" stroke-width="1" vector-effect="non-scaling-stroke"/><line class="lt" x1="38" y1="3" x2="62" y2="3" stroke="#bff3f8" stroke-width="3" vector-effect="non-scaling-stroke" style="filter:drop-shadow(0 0 4px #8ccfdb)"/><line x1="20" y1="64" x2="80" y2="64" stroke="#2a5864" stroke-width="2" stroke-dasharray="2 2" vector-effect="non-scaling-stroke"/><line x1="3" y1="30" x2="3" y2="40" stroke="#c94b2b" stroke-width="2" vector-effect="non-scaling-stroke" opacity=".7"/></svg></div><div class="rib" style="transform:translateZ(-380px)"><svg viewBox="0 0 100 67" preserveAspectRatio="none"><polygon points="13,0 87,0 100,13 100,54 87,67 13,67 0,54 0,13" fill="none" stroke="#24505a" stroke-width="1.3" vector-effect="non-scaling-stroke"/><polygon points="16,3 84,3 97,16 97,51 84,64 16,64 3,51 3,16" fill="none" stroke="#163239" stroke-width="1" vector-effect="non-scaling-stroke"/><line class="lt" x1="38" y1="3" x2="62" y2="3" stroke="#bff3f8" stroke-width="3" vector-effect="non-scaling-stroke" style="filter:drop-shadow(0 0 4px #8ccfdb)"/><line x1="20" y1="64" x2="80" y2="64" stroke="#2a5864" stroke-width="2" stroke-dasharray="2 2" vector-effect="non-scaling-stroke"/><line x1="3" y1="30" x2="3" y2="40" stroke="#c94b2b" stroke-width="2" vector-effect="non-scaling-stroke" opacity=".7"/></svg></div><div class="rib f3" style="transform:translateZ(-760px)"><svg viewBox="0 0 100 67" preserveAspectRatio="none"><polygon points="13,0 87,0 100,13 100,54 87,67 13,67 0,54 0,13" fill="none" stroke="#24505a" stroke-width="1.3" vector-effect="non-scaling-stroke"/><polygon points="16,3 84,3 97,16 97,51 84,64 16,64 3,51 3,16" fill="none" stroke="#163239" stroke-width="1" vector-effect="non-scaling-stroke"/><line class="lt" x1="38" y1="3" x2="62" y2="3" stroke="#bff3f8" stroke-width="3" vector-effect="non-scaling-stroke" style="filter:drop-shadow(0 0 4px #8ccfdb)"/><line x1="20" y1="64" x2="80" y2="64" stroke="#2a5864" stroke-width="2" stroke-dasharray="2 2" vector-effect="non-scaling-stroke"/><line x1="3" y1="30" x2="3" y2="40" stroke="#c94b2b" stroke-width="2" vector-effect="non-scaling-stroke" opacity=".7"/></svg></div><div class="rib" style="transform:translateZ(-1140px)"><svg viewBox="0 0 100 67" preserveAspectRatio="none"><polygon points="13,0 87,0 100,13 100,54 87,67 13,67 0,54 0,13" fill="none" stroke="#24505a" stroke-width="1.3" vector-effect="non-scaling-stroke"/><polygon points="16,3 84,3 97,16 97,51 84,64 16,64 3,51 3,16" fill="none" stroke="#163239" stroke-width="1" vector-effect="non-scaling-stroke"/><line class="lt" x1="38" y1="3" x2="62" y2="3" stroke="#bff3f8" stroke-width="3" vector-effect="non-scaling-stroke" style="filter:drop-shadow(0 0 4px #8ccfdb)"/><line x1="20" y1="64" x2="80" y2="64" stroke="#2a5864" stroke-width="2" stroke-dasharray="2 2" vector-effect="non-scaling-stroke"/><line x1="3" y1="30" x2="3" y2="40" stroke="#c94b2b" stroke-width="2" vector-effect="non-scaling-stroke" opacity=".7"/></svg></div><div class="rib f2" style="transform:translateZ(-1520px)"><svg viewBox="0 0 100 67" preserveAspectRatio="none"><polygon points="13,0 87,0 100,13 100,54 87,67 13,67 0,54 0,13" fill="none" stroke="#24505a" stroke-width="1.3" vector-effect="non-scaling-stroke"/><polygon points="16,3 84,3 97,16 97,51 84,64 16,64 3,51 3,16" fill="none" stroke="#163239" stroke-width="1" vector-effect="non-scaling-stroke"/><line class="lt" x1="38" y1="3" x2="62" y2="3" stroke="#bff3f8" stroke-width="3" vector-effect="non-scaling-stroke" style="filter:drop-shadow(0 0 4px #8ccfdb)"/><line x1="20" y1="64" x2="80" y2="64" stroke="#2a5864" stroke-width="2" stroke-dasharray="2 2" vector-effect="non-scaling-stroke"/><line x1="3" y1="30" x2="3" y2="40" stroke="#c94b2b" stroke-width="2" vector-effect="non-scaling-stroke" opacity=".7"/></svg></div><div class="rib" style="transform:translateZ(-1900px)"><svg viewBox="0 0 100 67" preserveAspectRatio="none"><polygon points="13,0 87,0 100,13 100,54 87,67 13,67 0,54 0,13" fill="none" stroke="#24505a" stroke-width="1.3" vector-effect="non-scaling-stroke"/><polygon points="16,3 84,3 97,16 97,51 84,64 16,64 3,51 3,16" fill="none" stroke="#163239" stroke-width="1" vector-effect="non-scaling-stroke"/><line class="lt" x1="38" y1="3" x2="62" y2="3" stroke="#bff3f8" stroke-width="3" vector-effect="non-scaling-stroke" style="filter:drop-shadow(0 0 4px #8ccfdb)"/><line x1="20" y1="64" x2="80" y2="64" stroke="#2a5864" stroke-width="2" stroke-dasharray="2 2" vector-effect="non-scaling-stroke"/><line x1="3" y1="30" x2="3" y2="40" stroke="#c94b2b" stroke-width="2" vector-effect="non-scaling-stroke" opacity=".7"/></svg></div><div class="rib f1" style="transform:translateZ(-2280px)"><svg viewBox="0 0 100 67" preserveAspectRatio="none"><polygon points="13,0 87,0 100,13 100,54 87,67 13,67 0,54 0,13" fill="none" stroke="#24505a" stroke-width="1.3" vector-effect="non-scaling-stroke"/><polygon points="16,3 84,3 97,16 97,51 84,64 16,64 3,51 3,16" fill="none" stroke="#163239" stroke-width="1" vector-effect="non-scaling-stroke"/><line class="lt" x1="38" y1="3" x2="62" y2="3" stroke="#bff3f8" stroke-width="3" vector-effect="non-scaling-stroke" style="filter:drop-shadow(0 0 4px #8ccfdb)"/><line x1="20" y1="64" x2="80" y2="64" stroke="#2a5864" stroke-width="2" stroke-dasharray="2 2" vector-effect="non-scaling-stroke"/><line x1="3" y1="30" x2="3" y2="40" stroke="#c94b2b" stroke-width="2" vector-effect="non-scaling-stroke" opacity=".7"/></svg></div><div class="rib" style="transform:translateZ(-2660px)"><svg viewBox="0 0 100 67" preserveAspectRatio="none"><polygon points="13,0 87,0 100,13 100,54 87,67 13,67 0,54 0,13" fill="none" stroke="#24505a" stroke-width="1.3" vector-effect="non-scaling-stroke"/><polygon points="16,3 84,3 97,16 97,51 84,64 16,64 3,51 3,16" fill="none" stroke="#163239" stroke-width="1" vector-effect="non-scaling-stroke"/><line class="lt" x1="38" y1="3" x2="62" y2="3" stroke="#bff3f8" stroke-width="3" vector-effect="non-scaling-stroke" style="filter:drop-shadow(0 0 4px #8ccfdb)"/><line x1="20" y1="64" x2="80" y2="64" stroke="#2a5864" stroke-width="2" stroke-dasharray="2 2" vector-effect="non-scaling-stroke"/><line x1="3" y1="30" x2="3" y2="40" stroke="#c94b2b" stroke-width="2" vector-effect="non-scaling-stroke" opacity=".7"/></svg></div><div class="rib f3" style="transform:translateZ(-3040px)"><svg viewBox="0 0 100 67" preserveAspectRatio="none"><polygon points="13,0 87,0 100,13 100,54 87,67 13,67 0,54 0,13" fill="none" stroke="#24505a" stroke-width="1.3" vector-effect="non-scaling-stroke"/><polygon points="16,3 84,3 97,16 97,51 84,64 16,64 3,51 3,16" fill="none" stroke="#163239" stroke-width="1" vector-effect="non-scaling-stroke"/><line class="lt" x1="38" y1="3" x2="62" y2="3" stroke="#bff3f8" stroke-width="3" vector-effect="non-scaling-stroke" style="filter:drop-shadow(0 0 4px #8ccfdb)"/><line x1="20" y1="64" x2="80" y2="64" stroke="#2a5864" stroke-width="2" stroke-dasharray="2 2" vector-effect="non-scaling-stroke"/><line x1="3" y1="30" x2="3" y2="40" stroke="#c94b2b" stroke-width="2" vector-effect="non-scaling-stroke" opacity=".7"/></svg></div><div class="rib" style="transform:translateZ(-3420px)"><svg viewBox="0 0 100 67" preserveAspectRatio="none"><polygon points="13,0 87,0 100,13 100,54 87,67 13,67 0,54 0,13" fill="none" stroke="#24505a" stroke-width="1.3" vector-effect="non-scaling-stroke"/><polygon points="16,3 84,3 97,16 97,51 84,64 16,64 3,51 3,16" fill="none" stroke="#163239" stroke-width="1" vector-effect="non-scaling-stroke"/><line class="lt" x1="38" y1="3" x2="62" y2="3" stroke="#bff3f8" stroke-width="3" vector-effect="non-scaling-stroke" style="filter:drop-shadow(0 0 4px #8ccfdb)"/><line x1="20" y1="64" x2="80" y2="64" stroke="#2a5864" stroke-width="2" stroke-dasharray="2 2" vector-effect="non-scaling-stroke"/><line x1="3" y1="30" x2="3" y2="40" stroke="#c94b2b" stroke-width="2" vector-effect="non-scaling-stroke" opacity=".7"/></svg></div><div class="door" style="transform:translateZ(-3800px)"><div class="glow"></div><div class="hl"></div><div class="hr"></div><div class="seam"></div><div class="lab">BRIDGE</div></div></div></div><div class="fog"></div><div class="scan"></div><div class="hud"><span class="brk a"></span><span class="brk b"></span><span class="brk c"></span><span class="brk d"></span><div class="tl">Deck 04 · <b>Corridor C</b><br>Life support <b>nominal</b></div><div class="tr">Crew <b>K. Villanueva</b><br>Clearance <b>Captain</b></div><div class="msg">Access granted<i>Welcome aboard, <em>Captain</em></i></div><div class="skip">Click to skip</div></div><div class="flash"></div></div>
+<script>
+(function(){
+  var sp=document.getElementById('splash');
+  try{
+    if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches){sp.remove();return}
+    var seen=false;try{seen=sessionStorage.getItem('kv-splash')==='1'}catch(e){}
+    if(seen){sp.remove();return}
+    try{sessionStorage.setItem('kv-splash','1')}catch(e){}
+    if(window.matchMedia&&matchMedia('(hover: none)').matches){var sk=sp.querySelector('.skip');if(sk)sk.textContent='Tap to skip'}
+    sp.classList.add('on');document.documentElement.style.overflow='hidden';
+    var timers=[],done=false,minDone=false,loaded=document.readyState==='complete';
+    timers.push(setTimeout(function(){sp.classList.add('greet')},1900));
+    timers.push(setTimeout(function(){sp.classList.add('open')},2550));
+    function end(){if(done)return;done=true;timers.forEach(clearTimeout);sp.classList.add('open','out');document.documentElement.style.overflow='';setTimeout(function(){sp.remove()},800)}
+    function maybe(){if(minDone&&loaded)end()}
+    timers.push(setTimeout(function(){minDone=true;maybe()},3300));
+    window.addEventListener('load',function(){loaded=true;maybe()});
+    setTimeout(end,10000);
+    sp.addEventListener('click',end);
+    window.addEventListener('keydown',function k(){end();window.removeEventListener('keydown',k)});
+  }catch(e){if(sp)sp.remove();document.documentElement.style.overflow=''}
+})();
+</script>
 <div id="sky" aria-hidden="true"></div><header><div><a class="brand" href="#top"><i>◇</i>Kaira Villanueva</a><nav aria-label="Main"><a class="cv" href="https://kaira.design/assets/about/kairavillanueva_resume.pdf" target="_blank" rel="noopener noreferrer">Résumé ↗</a><a href="mailto:fzf.villanueva@gmail.com">Let’s talk ↗</a></nav></div></header>
 <main id="top">
 <div class="home">
