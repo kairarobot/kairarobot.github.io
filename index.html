@@ -493,6 +493,7 @@ body:has(#vw:not([hidden]))::after{display:none}
 header nav{display:flex;gap:.5rem;align-items:center}
 nav a.cv{display:inline-flex!important;align-items:center;align-self:stretch}
 header nav a,.brand{white-space:nowrap}
+@media(max-width:640px){.panel:has(>.hero-in){background:none!important;clip-path:none!important;padding:0!important;box-shadow:none!important;filter:none!important}.hero-in{background:none!important;clip-path:none!important;box-shadow:none!important;padding-left:.25rem!important;padding-right:.25rem!important}}
 /* keep slides within one screen on laptops */
 #vtrack .vs{padding-left:max(clamp(1.25rem,5vw,4rem),calc((100% - 1200px) / 2));padding-right:max(clamp(1.25rem,5vw,4rem),calc((100% - 1200px) / 2))}
 @media(min-width:900px){
